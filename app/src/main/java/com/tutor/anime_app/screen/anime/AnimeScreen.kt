@@ -1,8 +1,12 @@
 package com.tutor.anime_app.screen.anime
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,17 +22,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeScreen(
+fun SharedTransitionScope.AnimeScreen(
 	id: Int,
 	coverImage: String,
 	viewModel: AnimeViewModel = hiltViewModel<AnimeViewModel>(),
+	animatedVisibilityScope: AnimatedVisibilityScope,
 	modifier: Modifier = Modifier
 ) {
 	LaunchedEffect(key1 = true) {
@@ -38,17 +45,33 @@ fun AnimeScreen(
 	Scaffold() { innerPadding ->
 
 		LazyColumn(
-			modifier.padding(innerPadding.calculateBottomPadding() + 10.dp)
+
+			modifier
+				.fillMaxSize()
+				.padding(bottom = innerPadding.calculateBottomPadding() + 10.dp),
+			horizontalAlignment = Alignment.Start
 		) {
 			item {
 				AsyncImage(
 					model = coverImage,
 					contentDescription = id.toString(),
+
+					contentScale = ContentScale.Crop,
 					modifier = modifier
 						.fillMaxWidth()
 						.height(300.dp)
 						.clip(
-							RoundedCornerShape(20.dp),
+							RoundedCornerShape(
+								20.dp
+
+							),
+						)
+
+						.sharedElement(
+							rememberSharedContentState(
+								key = id.toString(),
+							),
+							animatedVisibilityScope = animatedVisibilityScope
 						)
 				)
 			}
@@ -61,7 +84,7 @@ fun AnimeScreen(
 					Column(
 						modifier = modifier
 							.fillMaxWidth()
-							.padding(20.dp),
+							.padding(10.dp),
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {
 						Text(
@@ -95,7 +118,8 @@ fun AnimeScreen(
 							)
 							Text(
 								text = anime?.attributes?.synopsis.toString(),
-								style = MaterialTheme.typography.bodyMedium
+								style = MaterialTheme.typography.bodyMedium,
+								textAlign = TextAlign.Justify
 							)
 
 						}
@@ -107,3 +131,9 @@ fun AnimeScreen(
 	}
 }
 
+//@Preview
+//@Composable
+//private fun AnimeScreenPrev() {
+//	AnimeScreen()
+//
+//}

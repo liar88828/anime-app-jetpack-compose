@@ -1,6 +1,9 @@
 package com.tutor.anime_app.screen.anime_list
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,10 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tutor.anime_app.screen.anime_list.component.AnimeListItem
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TrendingAnimeListScreen(
-	onClick: (String, String) -> Unit,
+fun SharedTransitionScope.TrendingAnimeListScreen(
+	onClick: (cover: String, id: String) -> Unit,
 	viewModel: TrendingAnimeListViewModel = hiltViewModel<TrendingAnimeListViewModel>(),
+	animatedVisibilityScope: AnimatedVisibilityScope,
 	modifier: Modifier = Modifier,
 ) {
 	val animeList by viewModel.animeList.collectAsState()
@@ -64,7 +69,13 @@ fun TrendingAnimeListScreen(
 						items(animeList) {
 							AnimeListItem(
 								item = it,
-								onClick = onClick,
+								onClick = {
+									onClick(
+										it.attributes.posterImage.original,
+										it.id
+									)
+								},
+								animatedVisibilityScope = animatedVisibilityScope
 							)
 						}
 					}

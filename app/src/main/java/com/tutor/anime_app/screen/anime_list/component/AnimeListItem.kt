@@ -1,5 +1,8 @@
 package com.tutor.anime_app.screen.anime_list.component
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,30 +27,36 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.tutor.anime_app.domain.model.AnimeData
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeListItem(
+fun SharedTransitionScope.AnimeListItem(
 	item: AnimeData,
-	onClick: (String, String) -> Unit,
-	modifier: Modifier = Modifier
+	onClick: () -> Unit,
+	modifier: Modifier = Modifier,
+	animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
-	Card(onClick = {
-		onClick(
-			item.attributes.posterImage.original,
-			item.id
-		)
-	}, modifier = modifier) {
+	Card(
+		onClick = onClick, modifier = modifier
+	) {
 		Row(
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.spacedBy(10.dp),
-			modifier = modifier.padding(6.dp)
+//			modifier = modifier.padding(6.dp)
 		) {
 			AsyncImage(
 				model = item.attributes.posterImage.original,
 				contentDescription = item.id,
 				modifier = modifier
 					.size(100.dp)
-					.clip(RoundedCornerShape(10.dp)), contentScale = ContentScale.Crop
+					.clip(
+						RoundedCornerShape(10.dp)
+					)
+					.sharedElement(
+						rememberSharedContentState(key = item.id),
+						animatedVisibilityScope = animatedVisibilityScope
+					),
+				contentScale = ContentScale.Crop
 			)
 			Column() {
 				RatingHome(item)
@@ -61,14 +70,6 @@ fun AnimeListItem(
 					overflow = TextOverflow.Ellipsis,
 					style = MaterialTheme.typography.bodySmall
 				)
-//				Text(text = item.attributes.titles.en ?: "", maxLines = 1)
-//				Text(text = item.attributes.episodeCount)
-//				Text(text = item.attributes.startDate)
-//				Text(text = item.attributes.endDate)
-//				Text(text = item.attributes.ageRating)
-//				Text(text = item.attributes.ageRatingGuide)
-//				Text(text = item.attributes.status)
-//				Text(text = item.attributes.)
 			}
 		}
 	}
