@@ -2,6 +2,8 @@ plugins {
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.kotlin.android)
 	alias(libs.plugins.kotlin.compose)
+	id("kotlin-kapt")
+	id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -28,11 +30,11 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		sourceCompatibility = JavaVersion.VERSION_11
+		targetCompatibility = JavaVersion.VERSION_11
 	}
 	kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "11"
 	}
 	buildFeatures {
 		compose = true
@@ -67,5 +69,19 @@ dependencies {
 
 
 	}
+	dependencies {
+		implementation("com.google.dagger:hilt-android:2.52")
+		kapt("com.google.dagger:hilt-android-compiler:2.52")
+		implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+	}
+//	coil
+	implementation("io.coil-kt:coil:2.7.0")
+	// navigation
+	implementation("androidx.navigation:navigation-compose:2.7.7")
+
+}
+// Allow references to generated code
+kapt {
+	correctErrorTypes = true
 }

@@ -16,4 +16,8 @@ interface  KitsuApi {
  suspend fun getAnimeById(@Path("id") id: Int): Response<AnimeResponseDto>
 
 
+ companion object{
+  const val baseUrl = "https://kitsu.io/api/edge/"
+ }
+
 }
