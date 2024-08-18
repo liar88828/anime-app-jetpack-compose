@@ -32,7 +32,8 @@ data class Attributes(
 )
 
 data class Titles(
-	val en: String?
+	val en: String?,
+	val ja: String?
 )
 
 data class PosterImage(
