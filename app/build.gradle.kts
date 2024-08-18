@@ -56,4 +56,16 @@ dependencies {
 	androidTestImplementation(libs.androidx.ui.test.junit4)
 	debugImplementation(libs.androidx.ui.tooling)
 	debugImplementation(libs.androidx.ui.test.manifest)
+//	retrofit not toml
+
+	dependencies {
+		implementation("com.squareup.retrofit2:retrofit:2.9.0")
+		implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+		implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+		implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+
+
+	}
+
 }
