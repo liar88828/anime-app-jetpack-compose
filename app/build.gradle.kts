@@ -4,11 +4,12 @@ plugins {
 	alias(libs.plugins.kotlin.compose)
 	id("kotlin-kapt")
 	id("com.google.dagger.hilt.android")
+	alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
 	namespace = "com.tutor.anime_app"
-	compileSdk = 34
+	compileSdk = 35
 
 	defaultConfig {
 		applicationId = "com.tutor.anime_app"
@@ -76,10 +77,20 @@ dependencies {
 
 	}
 //	coil
-	implementation("io.coil-kt:coil:2.7.0")
+	implementation(libs.coil.compose)
 	// navigation
-	implementation("androidx.navigation:navigation-compose:2.7.7")
+	implementation(libs.navigation.compose)
+	implementation(libs.androidx.navigation.ui.ktx)
+	// MARK: - Navigation
+	implementation(libs.kotlinx.serialization.json)
 
+	dependencies {
+		val emoji2_version = "1.4.0"
+
+		implementation("androidx.emoji2:emoji2:$emoji2_version")
+		implementation("androidx.emoji2:emoji2-views:$emoji2_version")
+		implementation("androidx.emoji2:emoji2-views-helper:$emoji2_version")
+	}
 }
 // Allow references to generated code
 kapt {

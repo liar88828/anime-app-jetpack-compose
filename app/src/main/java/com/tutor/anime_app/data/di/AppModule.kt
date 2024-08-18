@@ -15,13 +15,25 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-
+//	@Provides
+//	@Singleton
+//	fun providerOkHttpClient(): OkHttpClient {
+//		val okHttpClient = OkHttpClient.Builder()
+//		okHttpClient.readTimeout(30, TimeUnit.SECONDS)
+//		okHttpClient.connectTimeout(30, TimeUnit.SECONDS)
+//		okHttpClient.writeTimeout(90, TimeUnit.SECONDS)
+//		return okHttpClient.build()
+//
+//	}
 
 	@Provides
 	@Singleton
-	fun providerRetrofit(): Retrofit {
+	fun providerRetrofit(
+//		okHttpClient: OkHttpClient
+	): Retrofit {
 		return Retrofit.Builder()
 			.addConverterFactory(GsonConverterFactory.create())
+//			.client(okHttpClient)
 			.baseUrl(KitsuApi.baseUrl)
 			.build()
 
@@ -29,7 +41,7 @@ object AppModule {
 
 	@Provides
 	@Singleton
-	fun providerKitsuApi(retrofit: Retrofit):KitsuApi{
+	fun providerKitsuApi(retrofit: Retrofit): KitsuApi {
 		return retrofit
 			.create(KitsuApi::class.java)
 	}

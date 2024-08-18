@@ -20,30 +20,37 @@ class KitsuRepositoryImpl(private val api: KitsuApi) : KitsuRepository {
 			Log.d("TAG", "getTendingAnimeList: ${e.message}")
 			return emptyList()
 		}
-		return if (response.isSuccessful) {
-			response.body()?.data?.map { it.toModel() } ?: emptyList()
-		} else {
-			emptyList()
+//		return if (response.isSuccessful) {
+//			response.body()?.data?.map { it.toModel() } ?: emptyList()
+//		} else {
+//			emptyList()
+//		}
+		return response.data.map {
+			it.toModel()
 		}
+
 	}
 
 	override suspend fun getAnimeById(id: Int): AnimeData? {
 		val response = try {
 			 api.getAnimeById(id)
 		} catch (e: Exception) {
-			Log.d("TAG", "getTendingAnimeList: ${e.message}")
+			Log.d("TAG ERROR", "getTendingAnimeList: ${e.message}")
 			return null
 		} catch (e: retrofit2.HttpException) {
-			Log.d("TAG", "getTendingAnimeList: ${e.message}")
+			Log.d("TAG ERROR", "getTendingAnimeList: ${e.message}")
 			return null
 		} catch (e: IOException) {
-			Log.d("TAG", "getTendingAnimeList: ${e.message}")
+			Log.d("TAG ERROR", "getTendingAnimeList: ${e.message}")
 			return null
 		}
-		return if (response.isSuccessful) {
-			response.body()?.data?.toModel()
-		} else {
-			null
-		}
+//		return if (response.isSuccessful) {
+//			val data=response.body()
+//			Log.d("SUCCESS", "$data")
+//			data?.data?.toModel()
+//		} else {
+//			null
+//		}
+		return response.data.toModel()
 	}
 }
